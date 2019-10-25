@@ -57,10 +57,8 @@ for i = 1 : height
             kk=xor(LSB, bin_num_message(embed_counter));
 			% Find whether the bit is same or needs to change 
 			temp = double(xor(LSB, bin_num_message(embed_counter))); 
-			
 			% Updating the output to input + temp 
 			output(i, j) = input(i, j)+temp; 
-			
 			% Increment the embed counter 
 			embed_counter = embed_counter+1; 
 		end
@@ -70,5 +68,4 @@ end
 
 % Write both the input and output images to local storage 
 % Mention the path to a folder here. 
-imwrite(input, 'originalImage.png'); 
-imwrite(output, 'stegoImage.png'); 
+ 
