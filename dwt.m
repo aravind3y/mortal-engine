@@ -1,30 +1,27 @@
-myimage1=imread('original_image.jpg');
+myimage1=imread('download.jpeg');
 myimage1=rgb2gray(myimage1);
 myimage1 = im2double(myimage1).*255;
 height=size(myimage1,1);
 width=size(myimage1,2);
-%myimage=myimage1;
+
 imagedata = zeros(height,width);
-%width=width-1;
+width=width-1;
 height=height-1;
 %row
 for i=1:height
 for j=1:(width/2)
-    imagedata(i,j)=(myimage1(i,2*j-1)+myimage1(i,2*j))/2;
-    imagedata(i,j+width/2)=(myimage1(i,2*j-1)-myimage1(i,2*j))/2;
+    imagedata(i,j)=myimage1(i,2*j-1)+myimage1(i,2*j);
+    imagedata(i,j+width/2)=myimage1(i,2*j-1)-myimage1(i,2*j);
 end
 end
 %column
 imagedata2=imagedata;
 for j=1:width
 for i=1:(height/2)
-    imagedata(i,j)=(imagedata2(2*i-1,j)+imagedata2(2*i,j))/2;
-    imagedata(i+height/2,j)=(imagedata2(2*i-1,j)-imagedata2(2*i,j))/2;
+    imagedata(i,j)=imagedata2(2*i-1,j)+imagedata2(2*i,j);
+    imagedata(i+height/2,j)=imagedata2(2*i-1,j)-imagedata2(2*i,j);
 end
 end
-myimage = imagedata;
-imwrite(myimage1, 'originalImage.png'); 
-imwrite(myimage, 'stegoImage.png');
 
 message='happy diwali folks';
 % Length of the message where each character is 8 bits 
@@ -136,8 +133,41 @@ if(k==len/2)
 break;
 end
 end
-myimage = uint8(imagedata);
+finalimagedata=zeros(height+1,width+1);
+%column
+for j=1:width
+for i=1:(height/2)
+    finalimagedata(2*i-1,j)=(imagedata(i,j)+imagedata(i+height/2,j))/2.0;
+    finalimagedata(2*i,j)=(imagedata(i,j)-imagedata(i+height/2,j))/2.0;
+end
+end
+finalimage2=finalimagedata;
+%row
+for i=1:height
+for j=1:(width/2)
+    finalimagedata(i,2*j-1)=(finalimage2(i,j)+finalimage2(i,j+width/2))/2.0;
+    finalimagedata(i,2*j)=(finalimage2(i,j)-finalimage2(i,j+width/2))/2.0;
+end
+end
+k="";
+p=1;
+for i=1:height
+    for j=1:width
+    k=k+ mod(finalimagedata(i,j)*100,100)/25;
+    finalimagedata(i,j)=finalimagedata(i,j)-mod(finalimagedata(i,j)*100,100)/100;
+    if(p==len/2)
+        break;
+    end
+    p=p+1;
+    end
+    if(p==len/2)
+        break;
+    end
+end
+
+myimage = uint8(finalimagedata);
 myimage1 = uint8(myimage1);
+
 imwrite(myimage1, 'originalImage.png'); 
-imwrite(myimage, 'stegoImage2.png');
+imwrite(myimage, 'stegoImage2.png','Comment',k);
 
