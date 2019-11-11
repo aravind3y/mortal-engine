@@ -6,8 +6,12 @@ height=size(myimage1,1);
 width=size(myimage1,2);
 
 imagedata = zeros(height,width);
-%width=width-1;
-%height=height-1;
+if(mod(width,2)==1)
+width=width-1;
+end
+if(mod(height,2)==1)
+height=height-1;
+end
 %row
 for i=1:height
 for j=1:(width/2)
