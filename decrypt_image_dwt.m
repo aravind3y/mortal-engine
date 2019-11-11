@@ -5,6 +5,13 @@ dat=imfinfo("stegoImage2.png");
 comment=dat.Comment;
 height=size(myimage1,1);
 width=size(myimage1,2);
+if(mod(height,2)==1)
+height=height-1;
+end
+if(mod(width,2)==1)
+height=width-1;
+end
+
 comment = comment(:);
 imagedatadec = zeros(height,width);
 
